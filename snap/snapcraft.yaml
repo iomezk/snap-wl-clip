@@ -1,5 +1,5 @@
 name: wl-clip
-version: '2.1'
+version: '2.2'
 summary: wl-clipboard - command-line copy/paste utilities for Wayland
 description: |
   If you want this snap to use well known command names system-wide, run as a root user:
@@ -42,8 +42,8 @@ parts:
     source-type: local
     plugin: dump
   wl-clipboard:
-    source: https://github.com/bugaevc/wl-clipboard/archive/refs/tags/v2.1.0.tar.gz
-    source-checksum: sha256/72dab9a7d3835c76d6ff2089f15ffec9e064a321e5f3cbbe961a8fa81aff5573
+    source: https://github.com/bugaevc/wl-clipboard/archive/refs/tags/v2.2.0.tar.gz
+    source-checksum: sha256/414005cfa229d0e54f89a0d9a8473938e4c29adc21a9e556847a4d44ad508874
     source-type: tar
     plugin: meson
     build-packages:
