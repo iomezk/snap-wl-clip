@@ -1,5 +1,5 @@
 name: wl-clip
-version: '2.2'
+adopt-info: wl-clipboard
 summary: wl-clipboard - command-line copy/paste utilities for Wayland
 description: |
   If you want this snap to use well known command names system-wide, run as a root user:
@@ -14,14 +14,10 @@ grade: stable
 
 apps:
   copy:
-    command-chain:
-    - wrapper
     command: bin/wl-copy
     plugs:
     - wayland
   paste:
-    command-chain:
-    - wrapper
     command: bin/wl-paste
     plugs:
     - wayland
@@ -41,18 +37,28 @@ parts:
     source: snap/local/
     source-type: local
     plugin: dump
+    prime:
+    - -patches/
   wl-clipboard:
-    source: https://github.com/bugaevc/wl-clipboard/archive/refs/tags/v2.2.0.tar.gz
-    source-checksum: sha256/414005cfa229d0e54f89a0d9a8473938e4c29adc21a9e556847a4d44ad508874
+    source: https://github.com/bugaevc/wl-clipboard/archive/refs/tags/v2.2.1.tar.gz
+    source-checksum: sha256/6eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41aa1143783eb
     source-type: tar
     plugin: meson
     build-packages:
+    - jq
     - meson
     - pkg-config
     - libwayland-dev
+    - wayland-protocols
     meson-parameters:
     - --buildtype=release
     - --strip
     - --prefix=/
+    override-pull: |
+      craftctl default
+      patch -p1 -i "$CRAFT_PROJECT_DIR/snap/local/patches/fixed-runtime-dir.patch"
+    override-build: |
+      craftctl default
+      craftctl set "version=$(jq -r .version meson-info/intro-projectinfo.json)"
     prime:
     - bin/

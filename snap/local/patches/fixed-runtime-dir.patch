@@ -1,0 +1,30 @@
+--- a/src/wl-copy.c
++++ b/src/wl-copy.c
+@@ -207,6 +207,12 @@
+      */
+     signal(SIGPIPE, SIG_IGN);
+ 
++    uid_t uid = getuid();
++    if (uid >= 0 && uid < 100000) {
++        char runtime_dir[16];
++        snprintf(runtime_dir, sizeof(runtime_dir), "/run/user/%d", uid);
++        setenv("XDG_RUNTIME_DIR", runtime_dir, 1);
++    }
+     struct wl_display *wl_display = wl_display_connect(NULL);
+     if (wl_display == NULL) {
+         complain_about_wayland_connection();
+--- a/src/wl-paste.c
++++ b/src/wl-paste.c
+@@ -470,6 +470,12 @@
+     }
+     free(path);
+ 
++    uid_t uid = getuid();
++    if (uid >= 0 && uid < 100000) {
++        char runtime_dir[16];
++        snprintf(runtime_dir, sizeof(runtime_dir), "/run/user/%d", uid);
++        setenv("XDG_RUNTIME_DIR", runtime_dir, 1);
++    }
+     wl_display = wl_display_connect(NULL);
+     if (wl_display == NULL) {
+         complain_about_wayland_connection();
